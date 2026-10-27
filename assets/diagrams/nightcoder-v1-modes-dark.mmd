@@ -1,0 +1,53 @@
+%%{init: {"flowchart": {"rankSpacing": 30, "nodeSpacing": 24, "subGraphTitleMargin": {"top": 8, "bottom": 22}}}}%%
+flowchart TB
+    Draft["Research / Idea Drafts<br/>notes, articles, chat logs"]
+    Mask["Masking (ours)<br/>keys, e-mail, phone, resident no., card"]
+    Llama["Meta Llama via Ollama (local, free)<br/>claims, evidence, cause-effect, sources<br/>distill.py"]
+    Brief["Masked brief (2 pages)<br/>sent to the cloud once, max 12k chars<br/>--mode research | product | code"]
+    Draft --> Mask --> Llama --> Brief
+
+    subgraph A["MODE A - DAILY RESEARCH"]
+        BrainA["Google Gemini CLI<br/>Brain: causal reasoning"]
+        Outs["To-do prompt / To-do list<br/>Table / Keyword flow"]
+        Apps["Google Docs / Tasks / Calendar<br/>(next step)"]
+        BrainA -->|"flag instruction-like replies"| Outs -.-> Apps
+    end
+
+    subgraph B["MODE B - CODING (1 to 3 nights)"]
+        PM["Google Gemini CLI<br/>CEO / PM: PRD"]
+        CTO["Claude<br/>CTO: design, contracts, Codex specs"]
+        NC["NightCoder v2 (ours)<br/>inbox relay, stop time, never pushes"]
+        Codex["Codex CLI<br/>Engineering lead: build + commit"]
+        Gates{"NightCoder gates<br/>committed? remotes unchanged?<br/>diff guard + full test re-run"}
+        Fix["One fix round<br/>then roll back + stop queue"]
+        Second["gemini-api second opinion<br/>masked, capped, advisory"]
+        Review["Claude final review<br/>fake code, isolation, privacy"]
+        Push["You: push to GitHub"]
+        PM -->|"PRD, no implementation"| CTO -->|"inbox/ specs + patches"| NC -->|"codex exec"| Codex --> Gates
+        Gates -->|"fail"| Fix -.-> Codex
+        Gates -->|"pass"| Second -->|"outbox/ patches + REPORT"| Review --> Push
+        Review -.->|"fix patch to inbox/"| NC
+    end
+
+    Brief --> BrainA
+    Brief --> PM
+
+    classDef engineering fill:#18344b,stroke:#5ba7db,stroke-width:2px,color:#e6edf6
+    classDef google fill:#173a35,stroke:#4cc3a8,stroke-width:2px,color:#e6edf6
+    classDef claude fill:#352a4a,stroke:#b08be0,stroke-width:2px,color:#e6edf6
+    classDef worker fill:#4b2b22,stroke:#d39a6a,stroke-width:3px,color:#fff0e6
+    classDef ours fill:#263c17,stroke:#f2d16b,stroke-width:3px,color:#efffdc
+    classDef control fill:#42351e,stroke:#ddb965,stroke-width:2px,color:#e6edf6
+    classDef result fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
+    classDef stop fill:#40282d,stroke:#c58b92,stroke-width:2px,color:#e6edf6
+    class Draft,Push,Apps,Brief result
+    class Mask,NC ours
+    class Llama worker
+    class BrainA,PM,Second google
+    class CTO,Review claude
+    class Codex engineering
+    class Gates control
+    class Fix stop
+    class Outs result
+    style A fill:#151e28,stroke:#4cc3a8,stroke-width:1px,color:#e6edf6
+    style B fill:#151e28,stroke:#b08be0,stroke-width:1px,color:#e6edf6

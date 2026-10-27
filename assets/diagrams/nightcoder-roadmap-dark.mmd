@@ -1,0 +1,32 @@
+%%{init: {"flowchart": {"rankSpacing": 34, "nodeSpacing": 22, "subGraphTitleMargin": {"top": 8, "bottom": 18}}}}%%
+flowchart TB
+    subgraph Phases["PHASES"]
+        direction LR
+        P1["Phase 1 - v1 on one PC (now)<br/>nc2.py + distill.py built<br/>first real Codex task<br/>Ollama + Gemini CLI login"]
+        P2["Phase 2 - 2-night runs<br/>wait out Codex limits<br/>stop time with a date<br/>keep PC awake, phone alerts"]
+        P3["Phase 3 - Mode A outputs<br/>Google Tasks, Docs, Calendar<br/>Korean model bake-off<br/>PRD template tuning"]
+        P4["Phase 4 - Server runtime<br/>FastAPI cost slots A + B<br/>port guard, masking, wallet, audit<br/>NeMo as optional layer<br/>guard + cost as Gemini CLI extension / MCP"]
+        P1 --> P2 --> P3 --> P4
+    end
+    subgraph Loop["BUILD LOOP - repeated inside every phase"]
+        direction LR
+        L1["Llama<br/>compress ideas"] --> L2["Google<br/>PRD"] --> L3["Claude<br/>specs + contracts"] --> L4["NightCoder + Codex<br/>build + gates"] --> L5["Claude<br/>review"] --> L6["You<br/>push"]
+    end
+    Phases --- Loop
+
+    classDef now fill:#1a2837,stroke:#78d5ef,stroke-width:3px,color:#e6edf6
+    classDef later fill:#26313d,stroke:#a1afbf,stroke-width:2px,color:#e6edf6
+    classDef llama fill:#4b2b22,stroke:#d39a6a,stroke-width:2px,color:#fff0e6
+    classDef google fill:#173a35,stroke:#4cc3a8,stroke-width:2px,color:#e6edf6
+    classDef claude fill:#352a4a,stroke:#b08be0,stroke-width:2px,color:#e6edf6
+    classDef ours fill:#2f3a14,stroke:#f2d16b,stroke-width:3px,color:#fff8dc
+    classDef you fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
+    class P1 now
+    class P2,P3,P4 later
+    class L1 llama
+    class L2 google
+    class L3,L5 claude
+    class L4 ours
+    class L6 you
+    style Phases fill:#151e28,stroke:#2a3746,color:#e6edf6
+    style Loop fill:#151e28,stroke:#2a3746,color:#e6edf6

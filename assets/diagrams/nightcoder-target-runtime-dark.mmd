@@ -1,0 +1,48 @@
+%%{init: {"flowchart": {"rankSpacing": 30, "nodeSpacing": 26}}}%%
+flowchart TB
+    Client["Client / Tablet / Scheduler<br/>signed internal token: tenant, session, role"]
+    Orch["Python FastAPI Orchestrator<br/>dispatch, concurrency, per-tenant budget"]
+    SlotA["Cost slot A (ours)<br/>Credit wallet: reserve credits"]
+    InGuard["Input guard (ours)<br/>rate limit, Dynamic Guard score + lock,<br/>distributed injection, Unicode normalization, masking"]
+    NeMoIn["NVIDIA NeMo Guardrails<br/>optional 2nd layer: input rails"]
+    Queue["Task Queue<br/>bounded jobs, retries, usage-limit cooldown"]
+    Sandbox["Agent gates (ours)<br/>worktree, diff guard, remote check,<br/>test re-run, rollback"]
+    W1["Meta Llama worker<br/>extract and tag"]
+    W2["Meta Llama worker<br/>summarize"]
+    W3["Cloud brain<br/>reasoning, drafts"]
+    LLM["GuardedLLM (ours)<br/>every model call: reserve, call, settle"]
+    OutGuard["Output guard (ours)<br/>canary leak, extraction budget,<br/>8-gram copy ratio, hallucinated source removal"]
+    NeMoOut["NVIDIA NeMo Guardrails<br/>optional 2nd layer: output rails"]
+    SlotB["Cost slot B (ours)<br/>settle actual usage, monthly cap, never negative"]
+    Acct["Validation and Usage Accounting (ours)<br/>hash-only audit, funnel / ROI, tenant /metrics"]
+    Review["Stop / Defer<br/>record status for review"]
+
+    Client --> Orch --> SlotA --> InGuard
+    InGuard -->|"allowed"| NeMoIn
+    InGuard -->|"blocked"| Review
+    NeMoIn -.->|"allowed"| Queue
+    InGuard -.->|"NeMo off"| Queue
+    Queue --> W1 & W2 & W3
+    Queue -.->|"agent tasks only"| Sandbox -.-> W2
+    W1 & W2 & W3 --> LLM --> OutGuard
+    OutGuard -->|"allowed"| NeMoOut -.-> SlotB
+    OutGuard -.->|"NeMo off"| SlotB
+    OutGuard -->|"blocked"| Review
+    SlotB --> Acct
+
+    classDef engineering fill:#18344b,stroke:#5ba7db,stroke-width:2px,color:#e6edf6
+    classDef python fill:#26313d,stroke:#a1afbf,stroke-width:2px,color:#e6edf6
+    classDef nvidia fill:#263c17,stroke:#91cc45,stroke-width:3px,color:#efffdc
+    classDef ours fill:#2f3a14,stroke:#f2d16b,stroke-width:3px,color:#fff8dc
+    classDef worker fill:#4b2b22,stroke:#d39a6a,stroke-width:3px,color:#fff0e6
+    classDef google fill:#173a35,stroke:#4cc3a8,stroke-width:2px,color:#e6edf6
+    classDef control fill:#42351e,stroke:#ddb965,stroke-width:2px,color:#e6edf6
+    classDef stop fill:#40282d,stroke:#c58b92,stroke-width:2px,color:#e6edf6
+    class Client engineering
+    class Orch python
+    class NeMoIn,NeMoOut nvidia
+    class SlotA,InGuard,Sandbox,LLM,OutGuard,SlotB,Acct ours
+    class W1,W2 worker
+    class W3 google
+    class Queue control
+    class Review stop
