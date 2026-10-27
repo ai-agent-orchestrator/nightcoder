@@ -1,0 +1,27 @@
+%%{init: {"flowchart": {"rankSpacing": 30, "nodeSpacing": 24, "subGraphTitleMargin": {"top": 8, "bottom": 20}}}}%%
+flowchart TB
+    W["Start wizard<br/>pick model from menu, enter remaining %,<br/>reset time, deadline"] --> P["Plan per lane<br/>what fits before limits and deadline"]
+    P --> E["Clean environment<br/>all API keys stripped"]
+    E --> S{"Subscription login?<br/>no api-key / billing flags"}
+    S -->|"no"| X["coder disabled"]
+    S -->|"yes"| R["Run spec<br/>stdin closed: nothing can confirm a purchase"]
+    R --> B{"Before next spec:<br/>remaining - margin >= cost?"}
+    B -->|"no, reset before deadline"| WAIT["wait for reset"]
+    B -->|"no, deadline"| STOP["stop early, clean"]
+    B -->|"yes"| R
+    R -.->|"purchase / upgrade text<br/>or a browser opened by the coder"| K["kill coder tree<br/>roll back, lane stopped"]
+    K --> OFF["screen off, kept off while idle<br/>never locks the PC"]
+    CAP["Hard caps per day<br/>no override flag"] -.-> R
+    class W,P result
+    class E,S,R,B ours
+    class X,STOP,WAIT control
+    class K,OFF stop
+    class CAP control
+    classDef engineering fill:#18344b,stroke:#5ba7db,stroke-width:2px,color:#e6edf6
+    classDef python fill:#26313d,stroke:#a1afbf,stroke-width:2px,color:#e6edf6
+    classDef java fill:#1f3320,stroke:#8fcf86,stroke-width:2px,color:#e6f6e4
+    classDef ours fill:#2f3a14,stroke:#f2d16b,stroke-width:3px,color:#fff8dc
+    classDef worker fill:#4b2b22,stroke:#d39a6a,stroke-width:3px,color:#fff0e6
+    classDef control fill:#42351e,stroke:#ddb965,stroke-width:2px,color:#e6edf6
+    classDef result fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
+    classDef stop fill:#40282d,stroke:#c58b92,stroke-width:2px,color:#e6edf6
