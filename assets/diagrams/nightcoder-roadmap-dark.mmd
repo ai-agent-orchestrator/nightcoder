@@ -2,31 +2,34 @@
 flowchart TB
     subgraph Phases["PHASES"]
         direction LR
-        P1["Phase 1 - v1 on one PC (now)<br/>nc2.py + distill.py built<br/>first real Codex task<br/>Ollama + Gemini CLI login"]
-        P2["Phase 2 - 2-night runs<br/>wait out Codex limits<br/>stop time with a date<br/>keep PC awake, phone alerts"]
-        P3["Phase 3 - Mode A outputs<br/>Google Tasks, Docs, Calendar<br/>Korean model bake-off<br/>PRD template tuning"]
-        P4["Phase 4 - Server runtime<br/>FastAPI cost slots A + B<br/>port guard, masking, wallet, audit<br/>NeMo as optional layer<br/>guard + cost as Gemini CLI extension / MCP"]
-        P1 --> P2 --> P3 --> P4
+        P1["Phase 1 - done<br/>v1 on one PC<br/>relay + distill built<br/>first real Codex task"]
+        P2["Phase 2 - now<br/>relay: lanes, scheduler,<br/>no-overage lock<br/>research: built and tested offline"]
+        P3["Phase 3 - next<br/>real-account smoke tests<br/>X, YouTube, Google, Chrome panel<br/>daily unattended runs"]
+        P4["Phase 4 - split<br/>two separate releases<br/>extract Agent Risk Gateway<br/>as a shared module"]
+        P5["Phase 5 - runtime<br/>memory experiment: memvid vs RAG<br/>server runtime with cost slots<br/>guard + cost as MCP / CLI extension"]
+        P1 --> P2 --> P3 --> P4 --> P5
     end
     subgraph Loop["BUILD LOOP - repeated inside every phase"]
         direction LR
-        L1["Llama<br/>compress ideas"] --> L2["Google<br/>PRD"] --> L3["Claude<br/>specs + contracts"] --> L4["NightCoder + Codex<br/>build + gates"] --> L5["Claude<br/>review"] --> L6["You<br/>push"]
+        L1["Local model<br/>compress + mask"] --> L2["Google<br/>research, PRD"] --> L3["Claude<br/>CTO: specs, review"] --> L4["NightCoder + Codex<br/>build + gates"] --> L5["Claude<br/>review"] --> L6["You<br/>merge by PR"]
     end
     Phases --- Loop
 
+    classDef done fill:#26313d,stroke:#a1afbf,stroke-width:2px,color:#e6edf6
     classDef now fill:#1a2837,stroke:#78d5ef,stroke-width:3px,color:#e6edf6
-    classDef later fill:#26313d,stroke:#a1afbf,stroke-width:2px,color:#e6edf6
-    classDef llama fill:#4b2b22,stroke:#d39a6a,stroke-width:2px,color:#fff0e6
-    classDef google fill:#173a35,stroke:#4cc3a8,stroke-width:2px,color:#e6edf6
-    classDef claude fill:#352a4a,stroke:#b08be0,stroke-width:2px,color:#e6edf6
-    classDef ours fill:#2f3a14,stroke:#f2d16b,stroke-width:3px,color:#fff8dc
-    classDef you fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
-    class P1 now
-    class P2,P3,P4 later
-    class L1 llama
-    class L2 google
-    class L3,L5 claude
-    class L4 ours
-    class L6 you
-    style Phases fill:#151e28,stroke:#2a3746,color:#e6edf6
-    style Loop fill:#151e28,stroke:#2a3746,color:#e6edf6
+    classDef later fill:#18344b,stroke:#5ba7db,stroke-width:2px,color:#e6edf6
+    classDef worker fill:#4b2b22,stroke:#d39a6a,stroke-width:2px,color:#e6edf6
+    classDef strategy fill:#173b3e,stroke:#66cfc8,stroke-width:2px,color:#e6edf6
+    classDef architecture fill:#342a4c,stroke:#b39ae5,stroke-width:2px,color:#e6edf6
+    classDef guard fill:#263c17,stroke:#91cc45,stroke-width:3px,color:#e6edf6
+    classDef result fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
+    class P1 done
+    class P2 now
+    class P3,P4,P5 later
+    class L1 worker
+    class L2 strategy
+    class L3,L5 architecture
+    class L4 guard
+    class L6 result
+    style Phases fill:#141f2c,stroke:#455f79,stroke-width:1.5px,color:#c9d8eb
+    style Loop fill:#141f2c,stroke:#455f79,stroke-width:1.5px,color:#c9d8eb
