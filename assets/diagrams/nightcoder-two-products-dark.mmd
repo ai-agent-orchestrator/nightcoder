@@ -1,0 +1,49 @@
+%%{init: {"flowchart": {"rankSpacing": 34, "nodeSpacing": 26, "subGraphTitleMargin": {"top": 8, "bottom": 18}}}}%%
+flowchart TB
+    subgraph SH["SHARED RISK + COST LAYER"]
+        direction LR
+        G1["Masking + leak scan<br/>raw text stays on the PC"]
+        G2["Injection + diff checks<br/>agent output is data, not orders"]
+        G3["Caps + budgets<br/>no extra payment by construction"]
+        G4["Human gates<br/>sensitive text, push, merge"]
+    end
+
+    subgraph RS["PRODUCT 1 - RESEARCH (DRAFT TO DONE)"]
+        direction TB
+        R1["Feeds you already have<br/>X bookmarks + lists, YouTube, AI chat exports, notes"]
+        R2["Local model (Ollama)<br/>masks, then keeps a running summary per field"]
+        R3["Daily tables + AI Mode pack<br/>to-do, content, trends, interesting"]
+        R4["You, in Google AI Mode<br/>answers saved back, emoji board decides what returns"]
+        R5["Dedicated Google Calendar + Tasks<br/>alarms for what you chose"]
+        R1 --> R2 --> R3 --> R4 --> R5
+    end
+
+    subgraph NC["PRODUCT 2 - NIGHTCODER RELAY"]
+        direction TB
+        N1["Specs in inbox/<br/>one purpose per spec, files in scope, forbidden files"]
+        N2["Coder lanes<br/>Codex or Claude Code on your subscription"]
+        N3{"NightCoder gates<br/>committed? remotes unchanged?<br/>diff guard + full test re-run"}
+        N4["outbox/ patches + REPORT.md<br/>one status page for phone or tablet"]
+        N5["You review and push<br/>NightCoder never pushes"]
+        N1 --> N2 --> N3
+        N3 -->|"pass"| N4 --> N5
+    end
+
+    SH -->|"every step passes it"| RS
+    SH -->|"every step passes it"| NC
+
+    classDef guard fill:#263c17,stroke:#91cc45,stroke-width:3px,color:#e6edf6
+    classDef engineering fill:#18344b,stroke:#5ba7db,stroke-width:2px,color:#e6edf6
+    classDef strategy fill:#173b3e,stroke:#66cfc8,stroke-width:2px,color:#e6edf6
+    classDef worker fill:#4b2b22,stroke:#d39a6a,stroke-width:3px,color:#e6edf6
+    classDef control fill:#42351e,stroke:#ddb965,stroke-width:2px,color:#e6edf6
+    classDef result fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
+    class G1,G2,G3,G4 guard
+    class R1,R5,N4,N5 result
+    class R2 worker
+    class R3,R4 strategy
+    class N1,N2 engineering
+    class N3 control
+    style SH fill:#141f2c,stroke:#455f79,stroke-width:1.5px,color:#c9d8eb
+    style RS fill:#141f2c,stroke:#455f79,stroke-width:1.5px,color:#c9d8eb
+    style NC fill:#141f2c,stroke:#455f79,stroke-width:1.5px,color:#c9d8eb

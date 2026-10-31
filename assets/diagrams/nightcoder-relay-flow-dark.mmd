@@ -1,0 +1,38 @@
+%%{init: {"flowchart": {"rankSpacing": 34, "nodeSpacing": 26, "subGraphTitleMargin": {"top": 8, "bottom": 18}}}}%%
+flowchart TB
+    Start["Start plan<br/>model, remaining %, reset time, deadline, safety margin<br/>answers expire after 24 h"]
+    Specs["Specs in inbox/<br/>headers: files, forbid, effort<br/>coder: codex, claude or any<br/>after: dependencies"]
+    Pre["Pre-run checks<br/>subscription login only, clean environment<br/>policy refusal of unsafe specs, hard caps"]
+    Sched{"Credit-aware scheduler<br/>lanes run in parallel<br/>'any' picks the coder with most headroom<br/>daytime reserve kept"}
+    Run["Coder runs non-interactive<br/>stdin closed, one spec at a time"]
+    Gates{"NightCoder gates<br/>1 committed  2 remotes unchanged<br/>3 diff guard  4 full tests re-run"}
+    Fix["One fix round<br/>then save to a backup branch<br/>roll back, stop the lane"]
+    Second["Optional second opinion<br/>masked, capped, advisory only"]
+    Out["outbox/ patches + REPORT.md<br/>STATUS page for phone and tablet"]
+    You["You review, then merge by pull request<br/>NightCoder never pushes"]
+    Wait["Usage limit<br/>spec stays queued<br/>wait for reset or stop quietly"]
+    Kill["Purchase text or a coder-opened browser<br/>kill the process tree, roll back<br/>screen off, lane stays stopped until you acknowledge"]
+
+    Start --> Sched
+    Specs --> Pre --> Sched
+    Sched --> Run --> Gates
+    Gates -->|"fail"| Fix
+    Gates -->|"pass"| Second --> Out --> You
+    Run -.->|"limit reached"| Wait
+    Run -.->|"safety trigger"| Kill
+    Fix -.->|"retry once"| Run
+
+    classDef engineering fill:#18344b,stroke:#5ba7db,stroke-width:2px,color:#e6edf6
+    classDef strategy fill:#173b3e,stroke:#66cfc8,stroke-width:2px,color:#e6edf6
+    classDef guard fill:#263c17,stroke:#91cc45,stroke-width:3px,color:#e6edf6
+    classDef control fill:#42351e,stroke:#ddb965,stroke-width:2px,color:#e6edf6
+    classDef result fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
+    classDef stop fill:#40282d,stroke:#c58b92,stroke-width:2px,color:#e6edf6
+    class Start,Specs engineering
+    class Pre guard
+    class Sched,Gates control
+    class Run engineering
+    class Second strategy
+    class Out,You result
+    class Fix,Kill stop
+    class Wait control

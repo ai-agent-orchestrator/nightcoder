@@ -1,0 +1,46 @@
+%%{init: {"flowchart": {"rankSpacing": 34, "nodeSpacing": 26, "subGraphTitleMargin": {"top": 8, "bottom": 18}}}}%%
+flowchart TB
+    subgraph IN["INPUTS - READ-ONLY, OFFICIAL ROUTES"]
+        direction LR
+        X["X bookmarks, reposts<br/>private topic lists<br/>official API + cost ledger"]
+        YT["YouTube channels<br/>top tier: short summary<br/>others: watch list"]
+        CL["AI chat exports<br/>ChatGPT, Claude, Gemini<br/>you export, we import"]
+        NT["Notes + ideas<br/>local workspace"]
+    end
+
+    Mask["Redaction first<br/>local name dictionary, masking, leak scanner"]
+    Gate{"Sensitive material?<br/>preview + explicit yes<br/>default answer: no"}
+    Held["Held on the PC<br/>left out of every pack"]
+    Local["Local model (Ollama)<br/>running summary per field<br/>only new or changed items"]
+    Tier["Tiers x signals<br/>S 3, A 1.5, B 1, P 0.5<br/>bookmark 3, repost 2, list 1, chat 2, AI Mode 3"]
+    Out["Daily tables<br/>to-do, content, trends, interesting<br/>charts beside the news, no model reading images"]
+    Pack["AI Mode pack<br/>copy blocks + 3 to 5 questions per field"]
+    You["You in Google AI Mode<br/>paste by hand, or a Chrome panel you start and watch"]
+    Ans["Answers saved back<br/>masked, tagged, weight 3"]
+    Board["Emoji board<br/>love, pass, see again +1/+3/+7 days, deep dive"]
+    Sync["Google Calendar + Tasks<br/>dedicated calendar and list only<br/>minimal scopes"]
+
+    IN --> Mask --> Gate
+    Gate -->|"no"| Held
+    Gate -->|"yes, or not sensitive"| Local
+    Local --> Tier --> Out
+    Out --> Pack --> You --> Ans
+    Out --> Board --> Sync
+    Ans -.->|"next night's summary"| Local
+    Board -.->|"deep dive next day"| Pack
+
+    classDef guard fill:#263c17,stroke:#91cc45,stroke-width:3px,color:#e6edf6
+    classDef worker fill:#4b2b22,stroke:#d39a6a,stroke-width:3px,color:#e6edf6
+    classDef strategy fill:#173b3e,stroke:#66cfc8,stroke-width:2px,color:#e6edf6
+    classDef control fill:#42351e,stroke:#ddb965,stroke-width:2px,color:#e6edf6
+    classDef result fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
+    classDef python fill:#26313d,stroke:#a1afbf,stroke-width:2px,color:#e6edf6
+    classDef stop fill:#40282d,stroke:#c58b92,stroke-width:2px,color:#e6edf6
+    class X,YT,CL,NT python
+    class Mask guard
+    class Gate control
+    class Held stop
+    class Local worker
+    class Tier,Out,Pack,Ans strategy
+    class You,Board,Sync result
+    style IN fill:#141f2c,stroke:#455f79,stroke-width:1.5px,color:#c9d8eb
