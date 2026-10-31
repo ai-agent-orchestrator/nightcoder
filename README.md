@@ -156,7 +156,7 @@ The early server design from [ai-multi-agent-orchestration](https://github.com/a
 | Accounting | Audit, funnel, metrics | hash-only audit, funnel / ROI, tenant-scoped Prometheus metrics |
 | Agent tasks | NightCoder gates | worktree isolation, diff guard, test re-run, rollback |
 
-The memory layer for that runtime is decided by experiment, not by default: memvid is the baseline and a RAG store (for example pgvector) is the comparison, both behind one function boundary.
+The memory layer for that runtime is memvid, kept behind one function boundary so it can be replaced later without touching callers. It is chosen over a separate vector-database RAG stack for its lighter footprint and simpler adoption.
 
 ## What changed from the early design
 
@@ -179,7 +179,7 @@ The memory layer for that runtime is decided by experiment, not by default: memv
 | 2 · now | Relay: lanes, scheduler, no-overage lock. Research: full pipeline built and tested offline | a two-lane queue finishes unattended over two nights with no extra payment possible |
 | 3 | Real-account smoke tests (X, YouTube, Google, Chrome panel) and daily unattended runs | one morning run produces the board, the pack and the alarms on real accounts |
 | 4 | Split into two releases; extract the Agent Risk Gateway as a shared module | each product installs and runs without the other |
-| 5 | Memory experiment (memvid vs RAG); server runtime with cost slots A + B; guard + cost packaged as an MCP / CLI extension | the runtime passes the same guard and billing tests as the legal service |
+| 5 | memvid memory layer behind one function boundary; server runtime with cost slots A + B; guard + cost packaged as an MCP / CLI extension | the runtime passes the same guard and billing tests as the legal service |
 
 ## Release plan: two separate packages
 
