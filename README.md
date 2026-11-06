@@ -69,6 +69,10 @@ Read-only inputs, a local model first, and a human in the loop for the thinking.
 
    Keyboard aliases (`-`, `!!`, `ok`, `?`, `!?`, `*`) cover devices without emoji input. A dedicated Google Calendar and a dedicated Tasks list receive one alarm per due line (scopes `calendar.app.created` and `tasks` only, no other calendar is read), editable times survive the next sync, and completing a task in Google flips the board mark.
 
+**Planned: semantic filter in front of the local summarizer**
+
+Redacted items are turned into local embedding vectors, and cosine similarity (closer to 1 = closer in meaning) finds items that say the same thing in different words. The filter merges duplicate stories, routes items to fields, skips what was already summarized, and keeps the 12,000-character brief diverse. It reads only redacted text, never deletes an item, never overrides the tier rules (S is never dropped), and starts in a log-only shadow week. Design: [docs/research-semantic-filter.md](docs/research-semantic-filter.md).
+
 **Also in the box**
 
 - A local personal workspace (127.0.0.1 only): ideas, reminders, public-source research queue, weekly feedback with per-field targets.

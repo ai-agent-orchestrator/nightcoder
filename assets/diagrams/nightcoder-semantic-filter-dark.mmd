@@ -1,0 +1,45 @@
+%%{init: {"flowchart": {"rankSpacing": 34, "nodeSpacing": 26, "subGraphTitleMargin": {"top": 8, "bottom": 18}}}}%%
+flowchart TB
+    Mask["Redaction first<br/>name dictionary, masking, leak scanner"]
+    Gate{"Sensitive material?<br/>preview + explicit yes"}
+    Embed["Local embeddings<br/>redacted text only, no network<br/>one model + revision per index"]
+    Index[("Vector index<br/>redacted zone, weekend lock<br/>never synced")]
+
+    subgraph FILTER["SEMANTIC FILTER - MERGE, ROUTE, RANK, NEVER DELETE"]
+        direction LR
+        Dup["Near-duplicate merge<br/>same story, other words<br/>keep highest tier as lead"]
+        Route["Field routing<br/>margin over 2nd field<br/>unsure: current rule"]
+        Novel["Novelty check<br/>already summarized?<br/>unsure: summarize"]
+        Interest["Interest hint<br/>close to love / deep dive<br/>small capped bonus"]
+    end
+
+    Local["Local model (Ollama Llama)<br/>running summary per field<br/>fewer, distinct items"]
+    Tier["Tiers x signals<br/>S never dropped"]
+    Brief["Brief selector<br/>diversity-aware, 12,000-char cap"]
+    Pack["AI Mode pack + daily tables"]
+    Log["Shadow log<br/>decision, score, reason, model version"]
+
+    Mask --> Gate -->|"yes, or not sensitive"| Embed
+    Embed --> Index
+    Embed --> FILTER
+    Index -.-> FILTER
+    FILTER --> Local --> Tier --> Brief --> Pack
+    FILTER -.-> Log
+
+    classDef guard fill:#263c17,stroke:#91cc45,stroke-width:3px,color:#e6edf6
+    classDef worker fill:#4b2b22,stroke:#d39a6a,stroke-width:3px,color:#e6edf6
+    classDef strategy fill:#173b3e,stroke:#66cfc8,stroke-width:2px,color:#e6edf6
+    classDef control fill:#42351e,stroke:#ddb965,stroke-width:2px,color:#e6edf6
+    classDef result fill:#1a2837,stroke:#78d5ef,stroke-width:2px,color:#e6edf6
+    classDef python fill:#26313d,stroke:#a1afbf,stroke-width:2px,color:#e6edf6
+    classDef engineering fill:#18344b,stroke:#5ba7db,stroke-width:2px,color:#e6edf6
+    class Mask guard
+    class Gate control
+    class Embed worker
+    class Index python
+    class Dup,Route,Novel,Interest engineering
+    class Local worker
+    class Tier,Brief strategy
+    class Pack result
+    class Log control
+    style FILTER fill:#141f2c,stroke:#455f79,stroke-width:1.5px,color:#c9d8eb
