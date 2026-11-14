@@ -6,6 +6,8 @@
 > [ai-multi-agent-orchestration](https://github.com/ai-agent-orchestrator/ai-multi-agent-orchestration).
 > This repository documents the design. The NightCoder source code is kept private for now; the plan to release the two products separately is under [Release plan](#release-plan-two-separate-packages).
 
+**New (2026-11): [Field notes - 16 incidents from two weeks of unattended night runs, and the design that stops them](docs/FIELD_NOTES_2026-11.md).**
+
 [![Two products behind one shared risk and cost layer](assets/diagrams/nightcoder-two-products-dark.png)](assets/diagrams/nightcoder-two-products-dark.svg)
 
 *One PC, no server, no API spend. The shared layer is enforced by code, never by an agent's goodwill.*
